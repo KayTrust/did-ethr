@@ -1,24 +1,8 @@
-import { Provider, Signer as TxSigner, Wallet, JsonRpcProvider, WebSocketProvider } from "ethers";
-import { EthrDID } from "ethr-did";
-import { Signer as JWTSigner } from "did-jwt";
+import { Wallet, JsonRpcProvider, WebSocketProvider } from "ethers";
+import { EthrDID, DIDConfig } from "./did";
 import { getChainIdFromChainNameOrId } from "./utils";
 
-interface IConfig {
-    // identifier: string
-    chainNameOrId?: string | number | bigint
-
-    registry?: string
-
-    signer?: JWTSigner
-    alg?: 'ES256K' | 'ES256K-R'
-    txSigner?: TxSigner
-    privateKey?: string
-
-    rpcUrl?: string
-    provider?: Provider
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    web3?: any
-}
+type IConfig = Omit<DIDConfig, 'identifier'>
 
 type WithId<T> = T & {
     identifier?: string

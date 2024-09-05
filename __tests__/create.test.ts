@@ -1,5 +1,6 @@
-import { EthrDID } from 'ethr-did';
-import { createDidEthr } from '#src/create'
+import { EthrDID } from '#src/index';
+import { createDidEthr } from '#src/index'
+import { AMOY_CHAIN_ID, CARDONA_CHAIN_ID } from '#src/constants';
 
 let address = '', publicKey = '';
 
@@ -15,12 +16,12 @@ describe("create a did ethr", () => {
     });
 
     test('create a did on Polygon Amoy', () => {
-        const didEthr = createDidEthr(address, {chainNameOrId: 80002, registry: "0xBC56d0883ef228b2B16420E9002Ece0A46c893F8"})
+        const didEthr = createDidEthr(address, {chainNameOrId: AMOY_CHAIN_ID, registry: "0xBC56d0883ef228b2B16420E9002Ece0A46c893F8"})
         expect(didEthr.did).toBe(`did:ethr:0x13882:${address}`);
     });
 
     test('create a did on Cardona', () => {
-        const didEthr = createDidEthr(address, {chainNameOrId: 2442, registry: "0x03d5003bf0e79c5f5223588f347eba39afbc3818"})
+        const didEthr = createDidEthr(address, {chainNameOrId: CARDONA_CHAIN_ID, registry: "0x03d5003bf0e79c5f5223588f347eba39afbc3818"})
         expect(didEthr.did).toBe(`did:ethr:0x98a:${address}`);
     });
 

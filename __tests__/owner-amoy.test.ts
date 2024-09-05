@@ -1,6 +1,6 @@
-import { EthrDID } from 'ethr-did';
+import { EthrDID } from '#src/index';
 import { Wallet } from 'ethers';
-import { createDidEthrFromPrivateKeyAndRpc } from '#src/create'
+import { createDidEthrFromPrivateKeyAndRpc } from '#src/index'
 import { RPC_AMOY_DEFAULT, CONTRACT_REGISTRY_AMOY_DEFAULT, AMOY_CHAIN_ID } from '#src/constants';
 
 const TEST_PRIVATE_KEY_1 = process.env.TEST_KEY_1;
