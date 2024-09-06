@@ -2,4 +2,5 @@ export { CONTRACT_REGISTRY_AMOY_DEFAULT, CONTRACT_REGISTRY_CARDONA_DEFAULT } fro
 export * from './create'
 export * from './did'
 export { KeyPair, DelegateTypes } from 'ethr-did'
+export * from 'did-resolver'
 export * from 'ethr-did-resolver'
