@@ -9,6 +9,10 @@
     "url": "https://github.com/KayTrust/did-ethr/issues"
   },
   "homepage": "https://github.com/KayTrust/did-ethr#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "tsc && tsc-alias",
     "postinstall": "rm -rf lib && yarn run build",
