@@ -52,3 +52,12 @@ const didEthr = createDidEthrFromPrivateKeyAndRpc(privateKey, rpcUrl, {chainName
 // prints did
 console.log(didEthr.did) // "did:ethr:0x13882:<address>"
 ```
+
+##### Adding did to the Ethr Registry
+
+```ts
+// Create a ethr did object
+const didEthr = createDidEthrFromPrivateKeyAndRpc(privateKey, rpcUrl, {chainNameOrId: chainId, registry: contract_address})
+
+const recipeHash = await didEthr.selfRegister()
+```
