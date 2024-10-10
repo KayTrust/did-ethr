@@ -14,7 +14,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "rm -rf lib && yarn tsc && yarn tsc-alias",
+    "build": "rm -rf lib && tsc && tsc-alias",
     "test": "jest"
   },
   "dependencies": {
