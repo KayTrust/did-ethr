@@ -1,7 +1,8 @@
 {
   "name": "@kaytrust/did-ethr",
-  "version": "0.1.0",
-  "main": "index.js",
+  "version": "0.1.3",
+  "source": "src/index.ts",
+  "main": "lib/index.js",
   "repository": "git@github.com:KayTrust/did-ethr.git",
   "author": "Geiner Grandez Valle",
   "license": "ISC",
@@ -13,9 +14,16 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "files": [
+    "lib",
+    "dist",
+    "src",
+    "tsconfig.json",
+    "LICENSE"
+  ],
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "postinstall": "rm -rf lib && yarn run build",
+    "build": "rm -rf lib && tsc && tsc-alias",
+    "prepublishOnly": "yarn build",
     "test": "jest"
   },
   "dependencies": {
