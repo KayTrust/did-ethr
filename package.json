@@ -1,6 +1,6 @@
 {
   "name": "@kaytrust/did-ethr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "repository": "git@github.com:KayTrust/did-ethr.git",
   "author": "Geiner Grandez Valle",
@@ -14,8 +14,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "postinstall": "rm -rf lib && yarn run build",
+    "build": "rm -rf lib && yarn tsc && yarn tsc-alias",
     "test": "jest"
   },
   "dependencies": {
