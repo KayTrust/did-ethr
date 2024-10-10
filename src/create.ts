@@ -34,3 +34,9 @@ export function createDidEthrFromPrivateKeyAndRpc(privateKey: Required<IConfig>[
     const wallet = new Wallet(privateKey, provider)
     return createDidEthrFromWalletWithProvider(wallet, {...conf, privateKey})
 }
+
+export function createDidEthrFromPrivateKey(privateKey: Required<IConfig>["privateKey"], conf?: IConfig) {
+    if (conf?.rpcUrl && !conf.provider) return createDidEthrFromPrivateKeyAndRpc(privateKey, conf.rpcUrl, conf)
+    const wallet = new Wallet(privateKey)
+    return createDidEthrFromWalletWithProvider(wallet, {...conf, privateKey})
+}
