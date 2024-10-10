@@ -35,6 +35,6 @@ jobs:
         with:
           cmd: build
       - name: Publish to npm
-        run: yarn publish
+        run: yarn publish --non-interactive
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
