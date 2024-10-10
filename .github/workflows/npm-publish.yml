@@ -27,9 +27,9 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: test
-        # env:
-        #   RPC_AMOY: ${{secrets.rpc_amoy}}
-        #   RPC_CARDONA: ${{secrets.rpc_cardona}}
+        env:
+          RPC_AMOY: ${{vars.RPC_AMOY}}
+          RPC_CARDONA: ${{vars.RPC_CARDONA}}
       - name: Run build
         uses: borales/actions-yarn@v4
         with:
