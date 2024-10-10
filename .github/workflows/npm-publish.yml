@@ -30,11 +30,7 @@ jobs:
         env:
           RPC_AMOY: ${{vars.RPC_AMOY}}
           RPC_CARDONA: ${{vars.RPC_CARDONA}}
-      - name: Run build
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
       - name: Publish to npm
-        run: npm publish
+        run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
