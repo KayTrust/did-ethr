@@ -27,6 +27,13 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: test
+        # env:
+        #   RPC_AMOY: ${{secrets.rpc_amoy}}
+        #   RPC_CARDONA: ${{secrets.rpc_cardona}}
+      - name: Run build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
       - name: Publish to npm
         run: yarn publish
         env:
