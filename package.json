@@ -27,6 +27,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@kaytrust/did-base": "^0.1.0",
     "dotenv": "^16.4.5",
     "ethr-did": "^3.0.21",
     "ethr-did-resolver": "^10.1.10"
@@ -41,5 +42,6 @@
   },
   "imports": {
     "#src/*": "./src/*"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
