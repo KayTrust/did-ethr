@@ -8,6 +8,10 @@ type WithId<T> = T & {
     identifier?: string
 }
 
+export function createRandomPrivateKey() {
+    return Wallet.createRandom().privateKey
+}
+
 export function createDidEthr(addressOrPublicKey: string, config?: IConfig) {
     const ethrDid = new EthrDID({ ...config, identifier: addressOrPublicKey });
     return ethrDid

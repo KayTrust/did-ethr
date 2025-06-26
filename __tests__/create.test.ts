@@ -1,4 +1,4 @@
-import { EthrDID } from '#src/index';
+import { createRandomPrivateKey, EthrDID } from '#src/index';
 import { createDidEthr } from '#src/index'
 import { AMOY_CHAIN_ID, CARDONA_CHAIN_ID } from '#src/constants';
 
@@ -10,6 +10,11 @@ describe("create a did ethr", () => {
         address = address0;
         publicKey = publicKey0;
     })
+    test('create a random private key', () => {
+        const privateKey = createRandomPrivateKey()
+        console.log("private.key", privateKey)
+        expect(privateKey).not.toBeNull();
+    });
     test('create a did on mainnet', () => {
         const didEthr = createDidEthr(address)
         expect(didEthr.did).toBe(`did:ethr:${address}`);

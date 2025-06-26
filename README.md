@@ -1,112 +1,176 @@
-# KayDev - did-ethr
+# **KayTrust - DID-ETHR**
 
-## Contract deployed (EthereumDIDRegistry)
-### Cardona zkEVM Testnet 
-`0x03d5003bf0e79c5f5223588f347eba39afbc3818` This is the official contract deployed in Cardona.
+The `@kaytrust/did-ethr` library is a tool designed to facilitate the creation, management, and resolution of Decentralized Identifiers (DIDs) based on Ethereum. This library abstracts the complexity of interacting with smart contracts like `EthereumDIDRegistry` and allows developers to work with DIDs in a simple and efficient manner.
 
-### Polygon Amoy (Tesnet)
-`0xBC56d0883ef228b2B16420E9002Ece0A46c893F8` This is the address of the contract self-deployed on Polygon Amoy.
+This document is designed to be accessible to both beginners and experienced developers.
 
-## How to create a ethr did?
+---
 
-### Example on Amoy (Polygon Testnet)
+## **What is a DID?**
 
-### Basic Creation of an ethr DID
-A basic creation only requires the account address or the public key (both associated with a private key under your control).
+A Decentralized Identifier (DID) is a unique identifier that allows an entity (person, organization, or device) to have a verifiable identity in a decentralized system, such as a blockchain. DIDs do not depend on a central authority, making them ideal for self-sovereign identity applications.
 
-With a basic creation, you cannot explicitly register that you are the owner of that DID, as the creation is only local and does not connect to any network. However, it is not necessary to explicitly register that you are the owner of that DID, since by possessing the private key, it is implicitly known that an address or derived public key belongs to the holder of that private key.
+In the case of `@kaytrust/did-ethr`, the DIDs are Ethereum-based and can interact with smart contracts to perform actions such as:
+- Registering the ownership of a DID.
+- Transferring the ownership of a DID.
+- Adding or revoking delegates.
+- Resolving a DID to obtain its associated document.
 
-You also cannot perform actions such as adding or revoking delegates or attributes.
+---
 
+## **Installation**
+
+To install the library, use one of the following commands:
+
+With Yarn:
+```bash
+yarn add @kaytrust/did-ethr
+```
+
+With NPM:
+```bash
+npm install @kaytrust/did-ethr
+```
+
+---
+
+## **Deployed Contracts**
+
+### Cardona zkEVM Testnet
+Contract address: `0x03d5003bf0e79c5f5223588f347eba39afbc3818`
+
+### Polygon Amoy (Testnet)
+Contract address: `0xBC56d0883ef228b2B16420E9002Ece0A46c893F8`
+
+---
+
+## **How to Create a DID**
+
+### **0. Create a Random DID**
+
+For testing or other purposes, you can create a new random DID (never repeated). By using the static function `EthrDID.createKeyPair()`, you obtain an object with the following information: `{ address, privateKey, publicKey, identifier }`. The **identifier** is the new DID in text format, and both the address and publicKey are derived from the private key (`privateKey`). Safeguard your private key if you wish to retain the DID.
+
+### **1. Basic Creation of a DID**
+
+The basic creation of a DID only requires an Ethereum address or a public key. This type of creation does not interact with the blockchain, so it does not register the DID in any smart contract.
+
+#### **Code Example**
 ```ts
-import { createDidEthr } from '@kaytrust/did-ethr'
+import { createDidEthr } from '@kaytrust/did-ethr';
 
+// Ethereum address or public key associated with your account
 const addressOrPublicKey = "<YOUR_ADDRESS_OR_PUBLIC_KEY>";
-// Amoy (Polygon)
-const chainId = 80002; // Optional parameter, defaults ethereum mainnet
 
-// Create a ethr did object
-const didEthr = createDidEthr(addressOrPublicKey, {chainNameOrId: chainId})
-
-// prints did
-console.log(didEthr.did) // "did:ethr:0x13882:<address_or_public_key>"
-```
-
-#### Complete Creation of an ethr DID
-
-Using the `createDidEthrFromPrivateKeyAndRpc` function. It has 2 required parameters: a `rpcUrl` (json rpc) and a `privateKey`.
-
-A complete creation allows actions within the contract, such as explicitly registering ownership of the ethr DID in the contract (optional, since by possessing the private key you are implicitly the owner of the DID). The main purpose of registering ownership in the contract is to transfer ownership of a DID associated with an address `A` (`did:ethr:A`) to another owner (address `B`). In other words, upon transfer, account `B` becomes the owner of a DID with address `A` (`did:ethr:A`). The DID is preserved even though the owner has a different address.
-
-You also can perform actions such as adding or revoking delegates or attributes.
-
-```ts
-import { createDidEthrFromPrivateKeyAndRpc } from '@kaytrust/did-ethr'
-
-const privateKey = "<YOUR_PRIVATE_KEY>";
-const rpcUrl = "https://polygon-amoy.drpc.org"; // A 
+// Network ID (optional, defaults to Ethereum Mainnet)
 const chainId = 80002; // Amoy (Polygon)
-const contract_address = "0xBC56d0883ef228b2B16420E9002Ece0A46c893F8"; // EthereumDIDRegistry on Amoy (Polygon)
 
-// Create a ethr did object
-const didEthr = createDidEthrFromPrivateKeyAndRpc(privateKey, rpcUrl, {chainNameOrId: chainId, registry: contract_address})
+// Create an Ethereum-based DID object
+const didEthr = createDidEthr(addressOrPublicKey, { chainNameOrId: chainId });
 
-// prints did
-console.log(didEthr.did) // "did:ethr:0x13882:<address>"
+// Print the generated DID
+console.log(didEthr.did); // Example: "did:ethr:0x13882:<address_or_public_key>"
 ```
 
-##### Adding did to the Ethr Registry
-Requires account to have funds
+#### **Result**
+The generated DID will have the following format:
+```
+did:ethr:<chain_namespace>:<address_or_public_key>
+```
 
+---
+
+### **2. Complete Creation of a DID**
+
+This method of creation allows interaction with the blockchain, including registering the DID in a smart contract, adding delegates, or transferring the ownership of the DID. For this, you need the private key and an RPC URL.
+
+#### **Code Example**
 ```ts
-// Create a ethr did object
-const didEthr = createDidEthrFromPrivateKeyAndRpc(privateKey, rpcUrl, {chainNameOrId: chainId, registry: contract_address})
+import { createDidEthrFromPrivateKeyAndRpc } from '@kaytrust/did-ethr';
 
-const recipeHash = await didEthr.selfRegister()
+// Private key of your account
+const privateKey = "<YOUR_PRIVATE_KEY>";
+
+// RPC node URL of the network
+const rpcUrl = "https://polygon-amoy.drpc.org"; // Amoy (Polygon)
+
+// Network ID and EthereumDIDRegistry contract address
+const chainId = 80002; // Amoy (Polygon)
+const contractAddress = "0xBC56d0883ef228b2B16420E9002Ece0A46c893F8";
+
+// Create an Ethereum-based DID object
+const didEthr = createDidEthrFromPrivateKeyAndRpc(privateKey, rpcUrl, {
+  chainNameOrId: chainId,
+  registry: contractAddress,
+});
+
+// Print the generated DID
+console.log(didEthr.did); // Example: "did:ethr:0x13882:<address>"
 ```
 
-## Manage delegates
+---
 
-### Adding a delegate
-Requires account to have funds
+## **Register a DID in the EthereumDIDRegistry Contract**
 
+Registering a DID in the contract allows it to be recognized on the blockchain. This requires funds in the account associated with the private key.
+
+#### **Code Example**
 ```ts
-// ...
-// Create a ethr did object
-const didEthr = createDidEthrFromPrivateKeyAndRpc(privateKey, rpcUrl, {chainNameOrId: chainId, registry: contract_address})
-// ...
+// Register the DID in the contract
+const recipeHash = await didEthr.selfRegister();
 
-const recipeHash = await ethrDid.addDelegate(delegateAddress); // ethr address account
+// Print the transaction hash
+console.log(`Successful registration. Transaction hash: ${recipeHash}`);
 ```
 
-### Validate that the delegate was added
+---
 
-Utilizando el resolver puede obtener el estado actual del did. Dentro del documento, en el attributo `didDocument.verificationMethod` encontrará el address de la cuenta que ha sido añadida como delegada
+## **Delegate Management**
 
+Delegates are accounts authorized to act on behalf of a DID. You can add, validate, or revoke delegates using the methods provided by the library.
+
+### **1. Add a Delegate**
+
+#### **Code Example**
+```ts
+// Ethereum address of the delegate
+const delegateAddress = "<DELEGATE_ETH_ADDRESS>";
+
+// Add the delegate
+const recipeHash = await didEthr.addDelegate(delegateAddress);
+
+// Print the transaction hash
+console.log(`Delegate added. Transaction hash: ${recipeHash}`);
+```
+
+---
+
+### **2. Validate That the Delegate Was Added**
+
+You can resolve the DID to verify if the delegate was added correctly.
+
+#### **Code Example**
 ```ts
 import { getResolver, Resolver } from '@kaytrust/did-ethr';
 
-const rpcUrl = "https://polygon-amoy.drpc.org"; // A 
-const chainId = 80002; // Amoy (Polygon)
-const contract_address = "0xBC56d0883ef228b2B16420E9002Ece0A46c893F8"; // EthereumDIDRegistry on Amoy (Polygon)
-const didResolver = new Resolver(getResolver({chainId: chainId, rpcUrl: rpcUrl, registry: contract_address}))
+// Create a resolver for the Amoy (Polygon) network
+const didResolver = new Resolver(
+  getResolver({
+    chainId: 80002,
+    rpcUrl: "https://polygon-amoy.drpc.org",
+    registry: "0xBC56d0883ef228b2B16420E9002Ece0A46c893F8",
+  })
+);
 
-// Returns a object with info about did
-const doc = await didResolver.resolve(ethrDid.did)
+// Resolve the DID
+const doc = await didResolver.resolve(didEthr.did);
 
-// prints a formatted doc
-console.log(JSON.stringify(doc, null, 2))
+// Print the resolved document
+console.log(JSON.stringify(doc, null, 2));
 ```
-Similar to this.
+
+#### **Example of a Resolved Document**
 ```json
 {
-  "didDocumentMetadata": {
-    "versionId": "11643688",
-    "updated": "2024-09-06T16:03:15Z"
-  },
-  "didResolutionMetadata": {
-    "contentType": "application/did+ld+json"
-  },
   "didDocument": {
     "id": "did:ethr:0x13882:0x2763b3bdadeAE0c8E36f8C7d3A8d3B283f04A563",
     "verificationMethod": [
@@ -115,33 +179,47 @@ Similar to this.
         "type": "EcdsaSecp256k1RecoveryMethod2020",
         "controller": "did:ethr:0x13882:0x2763b3bdadeAE0c8E36f8C7d3A8d3B283f04A563",
         "blockchainAccountId": "eip155:80002:0x2763b3bdadeAE0c8E36f8C7d3A8d3B283f04A563"
-      },
-      {
-        "id": "did:ethr:0x13882:0x2763b3bdadeAE0c8E36f8C7d3A8d3B283f04A563#delegate-2",
-        "type": "EcdsaSecp256k1RecoveryMethod2020",
-        "controller": "did:ethr:0x13882:0x2763b3bdadeAE0c8E36f8C7d3A8d3B283f04A563",
-        "blockchainAccountId": "eip155:80002:0xf63b16c77678D4D2F29aB24E3Bc01ef856391f7B"
       }
-    ],
-    "authentication": [
-      "did:ethr:0x13882:0x2763b3bdadeAE0c8E36f8C7d3A8d3B283f04A563#controller",
-      "did:ethr:0x13882:0x2763b3bdadeAE0c8E36f8C7d3A8d3B283f04A563#delegate-2"
-    ],
-    "assertionMethod": [
-      "did:ethr:0x13882:0x2763b3bdadeAE0c8E36f8C7d3A8d3B283f04A563#controller",
-      "did:ethr:0x13882:0x2763b3bdadeAE0c8E36f8C7d3A8d3B283f04A563#delegate-2"
-    ],
-    "@context": [
-      "https://www.w3.org/ns/did/v1",
-      "https://w3id.org/security/suites/secp256k1recovery-2020/v2",
-      "https://w3id.org/security/v3-unstable"
     ]
   }
 }
 ```
 
-### Revoking a delegate
+---
 
+### **3. Revoke a Delegate**
+
+#### **Code Example**
 ```ts
-const recipeHash = await ethrDid.revokeDelegate(delegateAddress); // ethr address account
+// Ethereum address of the delegate to revoke
+const delegateAddress = "<DELEGATE_ETH_ADDRESS>";
+
+// Revoke the delegate
+const recipeHash = await didEthr.revokeDelegate(delegateAddress);
+
+// Print the transaction hash
+console.log(`Delegate revoked. Transaction hash: ${recipeHash}`);
 ```
+
+---
+
+## **Use Cases**
+
+1. **Self-Sovereign Identity**:
+   - Allows users to control their identity without relying on a central authority.
+
+2. **Decentralized Authentication**:
+   - Useful for applications requiring blockchain-based authentication.
+
+3. **Delegate Management**:
+   - Ideal for organizations needing to delegate permissions to different accounts.
+
+---
+
+## **Conclusion**
+
+The `@kaytrust/did-ethr` library simplifies interaction with Ethereum-based DIDs, providing a clear and well-documented API. With this guide, even developers new to the world of DIDs and Ethereum can start working with this technology effectively.
+
+--- 
+
+This version retains the strengths of the original README, providing clarity, detailed examples, and a modular structure suitable for both beginners and experienced developers.
