@@ -35,4 +35,9 @@ describe("create a did ethr", () => {
         console.log('did:', didEthr.did)
         expect(didEthr.did).toBe(`did:ethr:${publicKey}`);
     });
+
+    test('mainnet address is case insensitive', () => {
+        const didEthr = createDidEthr("0x6df94F277937ceA98937359c7Fad84158e535165", {chainNameOrId: 1})
+        expect(didEthr.did).toBe(`did:ethr:0x1:0x6df94F277937ceA98937359c7Fad84158e535165`);
+    });
 })
